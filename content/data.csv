@@ -1,0 +1,2 @@
+id, title, author, supervision, publisher, price, genre, description, release_date, purchase_date, remarks, create_date, update_date
+1, テスト書籍, テスト著者, テスト監修, サンプル出版社, 1200, ビジネス, 説明説明説明, 2020/3/22, 2021/10/1, 学習のために購入, 2021/11/2, 2021/11/2
