@@ -71,6 +71,15 @@ export default defineComponent({
       $content
     } = useContext()
 
+    const router = useRouter()
+
+    const rules = {
+      required
+    }
+
+    const form = ref<VForm | null>(null)
+    const valid = ref(true)
+
     const userName = ref('')
     const password = ref('')
     const show = ref(false)
@@ -84,13 +93,17 @@ export default defineComponent({
 
     const login = () => {
       console.log('accounts', accounts.value.body)
+      router.push('/')
     }
 
     return {
+      form,
       login,
       userName,
       password,
-      show
+      rules,
+      show,
+      valid
     }
   }
 })
