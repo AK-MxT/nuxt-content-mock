@@ -10,51 +10,60 @@
         >
           ログイン
         </v-card-title>
-        <v-card-actions
-          class="justify-center"
+        <v-form
+          ref="form"
         >
-          <label>
-            ユーザ名
-            <v-text-field
-              v-model="userName"
-              hide-details="auto"
-              solo
-              style="width: 219px;"
-            />
-          </label>
-        </v-card-actions>
-        <v-card-actions
-          class="justify-center"
-        >
-          <label>
-            パスワード
-            <v-text-field
-              v-model="password"
-              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              hide-details="auto"
-              solo
-              type="password"
-              @click:append="show = !show"
-            />
-          </label>
-        </v-card-actions>
-        <v-card-actions
-          class="justify-center"
-        >
-          <v-btn
-            color="primary"
-            @click="login"
+          <v-card-actions
+            class="justify-center"
           >
-            ログイン
-          </v-btn>
-        </v-card-actions>
+            <label>
+              ユーザ名
+              <v-text-field
+                v-model="userName"
+                hide-details="auto"
+                :rules="[rules.required]"
+                solo
+                style="width: 219px;"
+              />
+            </label>
+          </v-card-actions>
+          <v-card-actions
+            class="justify-center"
+          >
+            <label>
+              パスワード
+              <v-text-field
+                v-model="password"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                hide-details="auto"
+                :rules="[rules.required]"
+                solo
+                type="password"
+                @click:append="show = !show"
+              />
+            </label>
+          </v-card-actions>
+          <v-card-actions
+            class="justify-center"
+          >
+            <v-btn
+              color="primary"
+              :disabled="!valid"
+              @click="login"
+            >
+              ログイン
+            </v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useContext, useAsync } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext, useAsync, useRouter } from '@nuxtjs/composition-api'
+import { required } from '~/lib/validation'
+import { VForm } from '~/types/vuetify'
 
 export default defineComponent({
   setup () {
