@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-app-bar
-      :clipped-left="clipped"
       fixed
       app
     >
@@ -9,12 +8,14 @@
         v-text="title"
       />
       <v-spacer />
-      <v-switch
-        v-model="theme"
-        :prepend-icon="themeIcon"
+      <v-btn
+        icon
+        @click="theme = !theme"
       >
-        <v-icon>mdi-menu</v-icon>
-      </v-switch>
+        <v-icon>
+          {{ themeIcon }}
+        </v-icon>
+      </v-btn>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -37,7 +38,8 @@ export default defineComponent({
   setup () {
     const { $vuetify } = useContext()
 
-    const theme = ref(false)
+    const title = 'Mock-App'
+    const theme = ref($vuetify.theme.dark)
 
     const themeIcon = computed(() => {
       return theme.value ? 'mdi-weather-night' : 'mdi-weather-sunny'
@@ -49,7 +51,8 @@ export default defineComponent({
 
     return {
       theme,
-      themeIcon
+      themeIcon,
+      title
     }
   }
 })
