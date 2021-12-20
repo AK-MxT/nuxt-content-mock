@@ -16,7 +16,17 @@
       :headers="headers"
       :items="items"
       :search="search"
-    />
+    >
+      <template
+        #item.actions="{ item }"
+      >
+        <v-btn
+          @click="toDetail"
+        >
+          詳細
+        </v-btn>
+      </template>
+    </v-data-table>
   </v-card>
 </template>
 
@@ -63,10 +73,15 @@ export default defineComponent({
       items.value = data.value.body
     })
 
+    const toDetail = () => {
+      console.log('詳細画面へ')
+    }
+
     return {
       headers,
       items,
-      search
+      search,
+      toDetail
     }
   }
 })
