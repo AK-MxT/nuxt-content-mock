@@ -15,23 +15,31 @@
     <v-data-table
       :headers="headers"
       :items="items"
+      no-data-text="データが存在しません"
+      no-results-text="一致するデータが存在しません"
       :search="search"
     >
-      <template
-        #item.actions="{ item }"
-      >
+      <!-- eslint-disable-next-line vue/valid-v-slot -->
+      <template #item.actions="{ item }">
         <v-btn
-          @click="toDetail"
+          color="primary"
+          small
+          @click="toDetail(item.id)"
         >
           詳細
         </v-btn>
+      </template>
+
+      <!-- eslint-disable-next-line vue/valid-v-slot -->
+      <template #item.price="{ item }">
+        {{ item.price.toLocaleString() }} 円
       </template>
     </v-data-table>
   </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useAsync, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useAsync, useContext, useRouter } from '@nuxtjs/composition-api'
 import type { TableData } from '~/types/data'
 
 export default defineComponent({
@@ -39,9 +47,15 @@ export default defineComponent({
     const {
       $content
     } = useContext()
+    const router = useRouter()
 
     const search = ref('')
     const headers = [
+      {
+        sortable: false,
+        text: '',
+        value: 'actions'
+      },
       {
         text: 'タイトル',
         value: 'title'
@@ -65,7 +79,7 @@ export default defineComponent({
     ]
 
     const data = ref<any>([])
-    const items = ref<TableData>()
+    const items = ref<TableData[]>()
 
     useAsync(async () => {
       const query = await $content('data').only(['body'])
@@ -73,8 +87,8 @@ export default defineComponent({
       items.value = data.value.body
     })
 
-    const toDetail = () => {
-      console.log('詳細画面へ')
+    const toDetail = (id: string) => {
+      router.push(`/${id}`)
     }
 
     return {
