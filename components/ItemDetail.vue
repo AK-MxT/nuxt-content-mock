@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, useAsync, useContext, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { useAccessor } from '~/hooks/useAccessor'
 import type { TableData } from '~/types/data'
 
 export default defineComponent({
@@ -11,6 +12,7 @@ export default defineComponent({
     const {
       $content
     } = useContext()
+    const accessor = useAccessor()
     const route = useRoute()
     const router = useRouter()
 
@@ -26,13 +28,14 @@ export default defineComponent({
     console.log(item.value)
     console.log(route.value.params.id)
 
-    const toDetail = (id: string) => {
-      router.push(`/${id}`)
+    const save = () => {
+      accessor.setSelectedItem(item.value!)
+      router.push('/')
     }
 
     return {
       item,
-      toDetail
+      save
     }
   }
 })
