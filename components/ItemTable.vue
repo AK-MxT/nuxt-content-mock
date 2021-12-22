@@ -32,7 +32,7 @@
 
       <!-- eslint-disable-next-line vue/valid-v-slot -->
       <template #item.price="{ item }">
-        {{ item.price.toLocaleString() }} 円
+        {{ price(item.price) }} 円
       </template>
     </v-data-table>
   </v-card>
@@ -87,6 +87,11 @@ export default defineComponent({
       items.value = data.value.body
     })
 
+    const price = (price: string): string => {
+      const numPrice = Number(price)
+      return numPrice.toLocaleString()
+    }
+
     const toDetail = (id: string) => {
       router.push(`/${id}`)
     }
@@ -94,6 +99,7 @@ export default defineComponent({
     return {
       headers,
       items,
+      price,
       search,
       toDetail
     }
