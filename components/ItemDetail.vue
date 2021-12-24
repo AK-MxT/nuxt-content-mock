@@ -1,41 +1,98 @@
 <template>
-  <v-container />
+  <v-card
+    class="px-4"
+  >
+    <v-card-title>
+      書籍詳細情報
+    </v-card-title>
+    <v-form
+      ref="form"
+    >
+      <v-text-field
+        v-model="selectedItem.title"
+        label="タイトル"
+        outlined
+        :readonly="canEdit"
+      />
+      <v-text-field
+        v-model="selectedItem.author"
+        label="著者"
+        outlined
+        :readonly="canEdit"
+      />
+      <v-text-field
+        v-model="selectedItem.supervision"
+        label="監修"
+        outlined
+        :readonly="canEdit"
+      />
+      <v-text-field
+        v-model="selectedItem.publisher"
+        label="出版社"
+        outlined
+        :readonly="canEdit"
+      />
+      <v-text-field
+        v-model="selectedItem.price"
+        suffix="円"
+        label="価格"
+        outlined
+        :rules="[rules.required, rules.number]"
+        :readonly="canEdit"
+      />
+      <v-text-field
+        v-model="selectedItem.genre"
+        label="ジャンル"
+        outlined
+        :readonly="canEdit"
+      />
+    </v-form>
+  </v-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, useAsync, useContext, useRoute, useRouter } from '@nuxtjs/composition-api'
+import { defineComponent, reactive, ref, useRouter } from '@nuxtjs/composition-api'
 import { useAccessor } from '~/hooks/useAccessor'
 import type { TableData } from '~/types/data'
+import { required, number } from '~/lib/validation'
 
 export default defineComponent({
   setup () {
-    const {
-      $content
-    } = useContext()
     const accessor = useAccessor()
-    const route = useRoute()
     const router = useRouter()
 
-    const data = ref<any>([])
-    const item = ref<TableData>()
+    const rules = {
+      number,
+      required
+    }
 
-    useAsync(async () => {
-      const query = await $content('data').only(['body']).where({ id: route.value.params.id })
-      data.value = await query.fetch()
-      item.value = data.value.body
+    const canEdit = ref(true)
+
+    const selectedItem = reactive<TableData>({
+      id: accessor.selectedItem.id,
+      title: accessor.selectedItem.title,
+      author: accessor.selectedItem.author,
+      supervision: accessor.selectedItem.supervision,
+      publisher: accessor.selectedItem.publisher,
+      price: accessor.selectedItem.price,
+      genre: accessor.selectedItem.genre,
+      description: accessor.selectedItem.description,
+      releaseDate: accessor.selectedItem.releaseDate,
+      purchaseDate: accessor.selectedItem.purchaseDate,
+      remarks: accessor.selectedItem.remarks,
+      createDate: accessor.selectedItem.createDate,
+      updateDate: accessor.selectedItem.updateDate
     })
 
-    console.log(item.value)
-    console.log(route.value.params.id)
-
     const save = () => {
-      accessor.setSelectedItem(item.value!)
       router.push('/')
     }
 
     return {
-      item,
-      save
+      canEdit,
+      rules,
+      save,
+      selectedItem
     }
   }
 })
