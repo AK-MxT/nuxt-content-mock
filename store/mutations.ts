@@ -2,7 +2,7 @@ import { mutationTree } from 'typed-vuex'
 import state from './state'
 import type { TableData } from '~/types/data'
 
-export const mutations = mutationTree(state, {
+export default mutationTree(state, {
   setItemList (state, newValue: TableData[]) {
     state.itemList = newValue
   },
