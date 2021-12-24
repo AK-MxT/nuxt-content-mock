@@ -5,7 +5,7 @@ import { getAccessorType } from 'typed-vuex'
 
 // Keep your existing vanilla Vuex code for state, getters, mutations, actions, plugins, etc.
 import state from './state'
-import { mutations } from './mutations'
+import mutations from './mutations'
 
 // This compiles to nothing and only serves to return the correct type of the accessor
 export const accessorType = getAccessorType({
