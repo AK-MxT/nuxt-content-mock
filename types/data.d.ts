@@ -1,10 +1,10 @@
 export interface TableData {
-  id: number,
+  id: string,
   title: string,
   author: string,
   supervision: string,
   publisher: string,
-  price: number,
+  price: string,
   genre: string,
   description: string,
   releaseDate: Date,
