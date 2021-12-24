@@ -12,6 +12,14 @@
         outlined
       />
     </v-card-title>
+    <v-card-actions>
+      <v-btn
+        color="error"
+        @click="reset"
+      >
+        データリセット
+      </v-btn>
+    </v-card-actions>
     <v-data-table
       :headers="headers"
       :items="items"
@@ -40,10 +48,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, useAsync, useContext, useRouter } from '@nuxtjs/composition-api'
+import { useAccessor } from '~/hooks/useAccessor'
 import type { TableData } from '~/types/data'
 
 export default defineComponent({
   setup () {
+    const accessor = useAccessor()
     const {
       $content
     } = useContext()
@@ -82,10 +92,22 @@ export default defineComponent({
     const items = ref<TableData[]>()
 
     useAsync(async () => {
+      if (accessor.itemList.length === 0) {
+        const query = await $content('data').only(['body'])
+        data.value = await query.fetch()
+        items.value = data.value.body
+        accessor.setItemList(data.value.body)
+      } else {
+        items.value = accessor.itemList
+      }
+    })
+
+    const reset = async () => {
       const query = await $content('data').only(['body'])
       data.value = await query.fetch()
       items.value = data.value.body
-    })
+      accessor.setItemList(data.value.body)
+    }
 
     const price = (price: string): string => {
       const numPrice = Number(price)
@@ -93,6 +115,8 @@ export default defineComponent({
     }
 
     const toDetail = (id: string) => {
+      const idx = accessor.itemList.findIndex(item => item.id === id)
+      accessor.setSelectedItem(accessor.itemList[idx])
       router.push(`/${id}`)
     }
 
@@ -100,6 +124,7 @@ export default defineComponent({
       headers,
       items,
       price,
+      reset,
       search,
       toDetail
     }
