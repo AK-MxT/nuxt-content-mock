@@ -10,30 +10,35 @@
     >
       <v-text-field
         v-model="selectedItem.title"
+        dense
         label="タイトル"
         outlined
         :readonly="!canEdit"
       />
       <v-text-field
         v-model="selectedItem.author"
+        dense
         label="著者"
         outlined
         :readonly="!canEdit"
       />
       <v-text-field
         v-model="selectedItem.supervision"
+        dense
         label="監修"
         outlined
         :readonly="!canEdit"
       />
       <v-text-field
         v-model="selectedItem.publisher"
+        dense
         label="出版社"
         outlined
         :readonly="!canEdit"
       />
       <v-text-field
         v-model="selectedItem.price"
+        dense
         suffix="円"
         label="価格"
         outlined
@@ -42,12 +47,14 @@
       />
       <v-text-field
         v-model="selectedItem.genre"
+        dense
         label="ジャンル"
         outlined
         :readonly="!canEdit"
       />
       <v-textarea
         v-model="selectedItem.description"
+        dense
         label="説明"
         outlined
         :readonly="!canEdit"
@@ -64,6 +71,7 @@
         <template #activator="{ on, attrs }">
           <v-text-field
             v-model="selectedItem.releaseDate"
+            dense
             label="発売日"
             outlined
             prepend-inner-icon="mdi-calendar"
@@ -90,6 +98,7 @@
         <template #activator="{ on, attrs }">
           <v-text-field
             v-model="selectedItem.purchaseDate"
+            dense
             label="購入日"
             outlined
             prepend-inner-icon="mdi-calendar"
@@ -106,18 +115,21 @@
       </v-menu>
       <v-textarea
         v-model="selectedItem.remarks"
+        dense
         label="備考"
         outlined
         :readonly="!canEdit"
       />
       <v-text-field
         v-model="selectedItem.createDate"
+        dense
         disabled
         label="作成日"
         outlined
       />
       <v-text-field
         v-model="selectedItem.updateDate"
+        dense
         disabled
         label="更新日"
         outlined
