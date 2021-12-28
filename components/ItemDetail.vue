@@ -135,12 +135,31 @@
         outlined
       />
       <v-btn
-        class="mb-4"
+        v-if="!canEdit"
+        class="mb-4 mr-2"
         color="primary"
         @click="canEdit = true"
       >
         編集する
       </v-btn>
+      <template
+        v-if="canEdit"
+      >
+        <v-btn
+          class="mb-4 mr-2"
+          color="accent"
+          @click="cancel"
+        >
+          キャンセル
+        </v-btn>
+        <v-btn
+          class="mb-4 mr-2"
+          color="info"
+          @click="save"
+        >
+          更新
+        </v-btn>
+      </template>
       <v-btn
         class="mb-4"
         color="secondary"
@@ -192,11 +211,33 @@ export default defineComponent({
       router.push('/')
     }
 
+    const cancel = () => {
+      // キャンセル時は元の値に戻す
+      Object.assign(selectedItem, {
+        id: accessor.selectedItem.id,
+        title: accessor.selectedItem.title,
+        author: accessor.selectedItem.author,
+        supervision: accessor.selectedItem.supervision,
+        publisher: accessor.selectedItem.publisher,
+        price: accessor.selectedItem.price,
+        genre: accessor.selectedItem.genre,
+        description: accessor.selectedItem.description,
+        releaseDate: accessor.selectedItem.releaseDate,
+        purchaseDate: accessor.selectedItem.purchaseDate,
+        remarks: accessor.selectedItem.remarks,
+        createDate: accessor.selectedItem.createDate,
+        updateDate: accessor.selectedItem.updateDate
+      })
+
+      canEdit.value = false
+    }
+
     const toList = () => {
       router.push('/')
     }
 
     return {
+      cancel,
       canEdit,
       purchaseDateMenu,
       releaseDateMenu,
