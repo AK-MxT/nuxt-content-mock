@@ -12,7 +12,9 @@
         outlined
       />
     </v-card-title>
-    <v-card-actions>
+    <v-card-actions
+      class="justify-end px-4"
+    >
       <v-btn
         color="error"
         @click="reset"
@@ -27,8 +29,7 @@
       no-results-text="一致するデータが存在しません"
       :search="search"
     >
-      <!-- eslint-disable-next-line vue/valid-v-slot -->
-      <template #item.actions="{ item }">
+      <template #[`item.actions`]="{ item }">
         <v-btn
           color="primary"
           small
@@ -38,8 +39,7 @@
         </v-btn>
       </template>
 
-      <!-- eslint-disable-next-line vue/valid-v-slot -->
-      <template #item.price="{ item }">
+      <template #[`item.price`]="{ item }">
         {{ price(item.price) }} 円
       </template>
     </v-data-table>
