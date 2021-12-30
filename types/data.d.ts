@@ -7,9 +7,9 @@ export interface TableData {
   price: string,
   genre: string,
   description: string,
-  releaseDate: Date,
-  purchaseDate: Date,
+  releaseDate: string,
+  purchaseDate: string,
   remarks: string,
-  createDate: Date,
-  updateDate: Date
+  createDate: string,
+  updateDate: string
 }
