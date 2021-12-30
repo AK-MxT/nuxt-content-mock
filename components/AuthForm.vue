@@ -12,6 +12,9 @@
         </v-card-title>
         <v-form
           ref="form"
+          v-model="valid"
+          lazy-validation
+          @submit.prevent
         >
           <v-card-actions
             class="justify-center"
@@ -20,9 +23,10 @@
               ユーザ名
               <v-text-field
                 v-model="userName"
+                dense
                 hide-details="auto"
                 :rules="[rules.required]"
-                solo
+                outlined
                 style="width: 219px;"
               />
             </label>
@@ -35,10 +39,11 @@
               <v-text-field
                 v-model="password"
                 :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                dense
                 hide-details="auto"
                 :rules="[rules.required]"
-                solo
-                type="password"
+                outlined
+                :type="show ? 'text' : 'password'"
                 @click:append="show = !show"
               />
             </label>
@@ -93,7 +98,9 @@ export default defineComponent({
 
     const login = () => {
       console.log('accounts', accounts.value.body)
-      router.push('/')
+      if (form.value?.validate()) {
+        router.push('/')
+      }
     }
 
     return {
