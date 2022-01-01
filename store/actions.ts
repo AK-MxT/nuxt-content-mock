@@ -14,6 +14,7 @@ export default actionTree(
       if (idx >= 0) {
         list[idx] = field
         commit('setItemList', list)
+        commit('setSnackbar', 'データを更新しました。')
       }
     }
   }

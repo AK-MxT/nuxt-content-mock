@@ -11,9 +11,21 @@ export default mutationTree(state, {
     state.selectedItem = newValue
   },
 
+  setSnackbar (state, newValue: string) {
+    state.snackbar = true
+    state.snackbarText = newValue
+  },
+
+  clearSnackbar (state) {
+    state.snackbar = false
+    state.snackbarText = ''
+  },
+
   initializeStore (state) {
     console.log('initialized')
     state.itemList = [] as TableData[]
     state.selectedItem = {} as TableData
+    state.snackbar = false
+    state.snackbarText = ''
   }
 })
