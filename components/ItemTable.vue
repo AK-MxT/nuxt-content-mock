@@ -1,50 +1,56 @@
 <template>
-  <v-card>
-    <v-card-title>
-      書籍一覧
-      <v-spacer />
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        dense
-        label="検索"
-        hide-details
-        outlined
-      />
-    </v-card-title>
-    <v-card-actions
-      class="justify-end px-4"
-    >
-      <v-btn
-        color="error"
-        small
-        @click="reset"
+  <div>
+    <v-card>
+      <v-card-title>
+        書籍一覧
+        <v-spacer />
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          dense
+          label="検索"
+          hide-details
+          outlined
+        />
+      </v-card-title>
+      <v-card-actions
+        class="justify-end px-4"
       >
-        データリセット
-      </v-btn>
-    </v-card-actions>
-    <v-data-table
-      :headers="headers"
-      :items="items"
-      no-data-text="データが存在しません"
-      no-results-text="一致するデータが存在しません"
-      :search="search"
-    >
-      <template #[`item.actions`]="{ item }">
         <v-btn
-          color="primary"
+          color="error"
           small
-          @click="toDetail(item.id)"
+          @click="reset"
         >
-          詳細
+          データリセット
         </v-btn>
-      </template>
+      </v-card-actions>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        no-data-text="データが存在しません"
+        no-results-text="一致するデータが存在しません"
+        :search="search"
+      >
+        <template #[`item.actions`]="{ item }">
+          <v-btn
+            color="primary"
+            small
+            @click="toDetail(item.id)"
+          >
+            詳細
+          </v-btn>
+        </template>
 
-      <template #[`item.price`]="{ item }">
-        {{ price(item.price) }} 円
-      </template>
-    </v-data-table>
-  </v-card>
+        <template #[`item.price`]="{ item }">
+          {{ price(item.price) }} 円
+        </template>
+      </v-data-table>
+    </v-card>
+    <base-snackbar
+      v-model="snackbar"
+      :text="snackbarText"
+    />
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,6 +65,9 @@ export default defineComponent({
       $content
     } = useContext()
     const router = useRouter()
+
+    const snackbar = ref(accessor.snackbar)
+    const snackbarText = ref(accessor.snackbarText)
 
     const search = ref('')
     const headers = [
@@ -127,6 +136,8 @@ export default defineComponent({
       price,
       reset,
       search,
+      snackbar,
+      snackbarText,
       toDetail
     }
   }
