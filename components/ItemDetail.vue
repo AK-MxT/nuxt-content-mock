@@ -217,7 +217,7 @@ export default defineComponent({
       // 保存処理
       if (form.value?.validate()) {
         // 更新日にシステム日付をセット
-        selectedItem.updateDate = new Date().toLocaleString()
+        selectedItem.updateDate = new Date().toISOString().split('T')[0]
 
         accessor.update(selectedItem)
         router.push('/')
