@@ -246,6 +246,7 @@ export default defineComponent({
     }
 
     const toList = () => {
+      accessor.clearSnackbar()
       router.push('/')
     }
 
