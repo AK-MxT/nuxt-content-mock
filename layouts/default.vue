@@ -34,7 +34,7 @@
       absolute
       app
     >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() + ' - ' + author }}</span>
     </v-footer>
   </v-app>
 </template>
@@ -48,6 +48,7 @@ export default defineComponent({
     const router = useRouter()
 
     const title = 'Mock-App'
+    const author = 'AK-MxT'
     const theme = ref($vuetify.theme.dark)
 
     const themeIcon = computed(() => {
@@ -63,6 +64,7 @@ export default defineComponent({
     })
 
     return {
+      author,
       logout,
       theme,
       themeIcon,
