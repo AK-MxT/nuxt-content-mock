@@ -17,6 +17,7 @@
     >
       <v-btn
         color="error"
+        small
         @click="reset"
       >
         データリセット
