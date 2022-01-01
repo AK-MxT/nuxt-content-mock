@@ -96,8 +96,8 @@ export default defineComponent({
       accounts.value = await query.fetch()
     })
 
+    // TODO: 実装途中
     const login = () => {
-      console.log('accounts', accounts.value.body)
       if (form.value?.validate()) {
         router.push('/')
       }
