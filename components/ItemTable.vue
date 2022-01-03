@@ -27,6 +27,7 @@
       <v-data-table
         :headers="headers"
         :items="items"
+        :loading="loading"
         no-data-text="データが存在しません"
         no-results-text="一致するデータが存在しません"
         :search="search"
@@ -70,6 +71,7 @@ export default defineComponent({
     const snackbarText = ref(accessor.snackbarText)
 
     const search = ref('')
+    const loading = ref(false)
     const headers = [
       {
         sortable: false,
@@ -102,6 +104,8 @@ export default defineComponent({
     const items = ref<TableData[]>()
 
     useAsync(async () => {
+      loading.value = true
+
       if (accessor.itemList.length === 0) {
         const query = await $content('data').only(['body'])
         data.value = await query.fetch()
@@ -110,6 +114,8 @@ export default defineComponent({
       } else {
         items.value = accessor.itemList
       }
+
+      loading.value = false
     })
 
     const reset = async () => {
@@ -133,6 +139,7 @@ export default defineComponent({
     return {
       headers,
       items,
+      loading,
       price,
       reset,
       search,
