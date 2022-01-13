@@ -41,10 +41,12 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, useContext, useRouter, watch } from '@nuxtjs/composition-api'
+import { useAccessor } from '~/hooks/useAccessor'
 
 export default defineComponent({
   setup () {
     const { $vuetify } = useContext()
+    const accessor = useAccessor()
     const router = useRouter()
 
     const title = 'Mock-App'
@@ -56,6 +58,11 @@ export default defineComponent({
     })
 
     const logout = () => {
+      accessor.setAuthentication({
+        isLogin: false,
+        userName: ''
+      })
+
       router.push('/auth')
     }
 
