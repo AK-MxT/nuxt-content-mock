@@ -10,8 +10,8 @@ const nuxtConfig: NuxtConfig = {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - mock-app',
-    title: 'mock-app',
+    titleTemplate: '%s',
+    title: 'CRUD-mock',
     htmlAttrs: {
       lang: 'en'
     },
