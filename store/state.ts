@@ -1,6 +1,7 @@
-import type { TableData } from '~/types/data'
+import type { Authentication, TableData } from '~/types/data'
 
 const state = () => ({
+  authInfo: {} as Authentication,
   itemList: [] as TableData[],
   selectedItem: {} as TableData,
   snackbar: false,

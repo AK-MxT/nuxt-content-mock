@@ -1,8 +1,12 @@
 import { mutationTree } from 'typed-vuex'
 import state from './state'
-import type { TableData } from '~/types/data'
+import type { Authentication, TableData } from '~/types/data'
 
 export default mutationTree(state, {
+  setAuthentication (state, newValue: Authentication) {
+    state.authInfo = newValue
+  },
+
   setItemList (state, newValue: TableData[]) {
     state.itemList = newValue
   },
@@ -23,6 +27,7 @@ export default mutationTree(state, {
 
   initializeStore (state) {
     console.log('initialized')
+    state.authInfo = {} as Authentication
     state.itemList = [] as TableData[]
     state.selectedItem = {} as TableData
     state.snackbar = false
