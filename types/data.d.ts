@@ -1,3 +1,14 @@
+export interface Account {
+  id: string,
+  password: string,
+  userName: string
+}
+
+export interface Authentication {
+  isLogin: boolean,
+  userName: string
+}
+
 export interface TableData {
   id: string,
   title: string,
