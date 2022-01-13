@@ -3,8 +3,15 @@
     <v-col>
       <v-card
         class="mx-auto pa-2"
-        max-width="272"
+        max-width="320"
       >
+        <!-- TODO: 閉じると再表示されない -->
+        <base-alert
+          v-model="alert"
+          dismissible
+          message="ユーザ名またはパスワードが異なります"
+          @close="alert = false"
+        />
         <v-card-title
           class="justify-center"
         >
@@ -67,8 +74,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, useContext, useAsync, useRouter } from '@nuxtjs/composition-api'
+import { useAccessor } from '~/hooks/useAccessor'
 import { required } from '~/lib/validation'
 import { VForm } from '~/types/vuetify'
+import type { Account } from '~/types/data'
 
 export default defineComponent({
   setup () {
@@ -76,11 +85,14 @@ export default defineComponent({
       $content
     } = useContext()
 
+    const accessor = useAccessor()
     const router = useRouter()
 
     const rules = {
       required
     }
+
+    const alert = ref(false)
 
     const form = ref<VForm | null>(null)
     const valid = ref(true)
@@ -89,21 +101,33 @@ export default defineComponent({
     const password = ref('')
     const show = ref(false)
 
-    const accounts = ref<any>([])
+    const res = ref<any>([])
+    const accounts = ref<Account[]>()
 
     useAsync(async () => {
       const query = await $content('account')
-      accounts.value = await query.fetch()
+      res.value = await query.fetch()
+
+      accounts.value = res.value.body
     })
 
-    // TODO: 実装途中
     const login = () => {
       if (form.value?.validate()) {
-        router.push('/')
+        if (accounts.value?.some(account => account.password === password.value && account.userName === userName.value)) {
+          accessor.setAuthentication({
+            isLogin: true,
+            userName: userName.value
+          })
+
+          router.push('/')
+        } else {
+          alert.value = true
+        }
       }
     }
 
     return {
+      alert,
       form,
       login,
       userName,
