@@ -17,6 +17,11 @@
         >
           ログイン
         </v-card-title>
+        <v-card-subtitle
+          class="text-center"
+        >
+          hoge / test1234 でログイン可能です。
+        </v-card-subtitle>
         <v-form
           ref="form"
           v-model="valid"
