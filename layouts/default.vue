@@ -1,9 +1,10 @@
 <template>
   <v-app>
     <v-app-bar
-      fixed
       app
+      clipped-left
     >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title
         v-text="title"
       />
@@ -25,6 +26,25 @@
         ログアウト
       </v-btn>
     </v-app-bar>
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      clipped
+    >
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     <v-main>
       <v-container>
         <nuxt />
@@ -52,6 +72,14 @@ export default defineComponent({
     const title = 'Mock-App'
     const author = 'AK-MxT'
     const theme = ref($vuetify.theme.dark)
+    const drawer = ref(false)
+
+    const items = [
+      {
+        title: '書籍登録',
+        to: '/register'
+      }
+    ]
 
     const themeIcon = computed(() => {
       return theme.value ? 'mdi-weather-night' : 'mdi-weather-sunny'
@@ -72,6 +100,8 @@ export default defineComponent({
 
     return {
       author,
+      drawer,
+      items,
       logout,
       theme,
       themeIcon,
