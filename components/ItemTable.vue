@@ -133,7 +133,7 @@ export default defineComponent({
     const toDetail = (id: string) => {
       const idx = accessor.itemList.findIndex(item => item.id === id)
       accessor.setSelectedItem(accessor.itemList[idx])
-      router.push(`/${id}`)
+      router.push(`/detail/${id}`)
     }
 
     return {
