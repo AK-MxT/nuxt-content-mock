@@ -5,7 +5,7 @@
     <v-card-title
       class="px-0"
     >
-      書籍詳細情報
+      {{ title }}
     </v-card-title>
     <v-form
       ref="form"
@@ -124,17 +124,19 @@
             label="備考"
           />
           <base-form-text-field
+            v-if="!registerMode"
             v-model="selectedItem.createDate"
             disabled
             label="作成日"
           />
           <base-form-text-field
+            v-if="!registerMode"
             v-model="selectedItem.updateDate"
             disabled
             label="更新日"
           />
           <v-btn
-            v-if="!canEdit"
+            v-if="!registerMode && !canEdit"
             class="mb-4 mr-2"
             color="primary"
             @click="canEdit = true"
@@ -142,7 +144,7 @@
             編集する
           </v-btn>
           <template
-            v-if="canEdit"
+            v-if="!registerMode && canEdit"
           >
             <v-btn
               class="mb-4 mr-2"
@@ -158,6 +160,18 @@
               @click="save"
             >
               更新
+            </v-btn>
+          </template>
+          <template
+            v-if="registerMode"
+          >
+            <v-btn
+              class="mb-4 mr-2"
+              color="info"
+              :disabled="!valid"
+              @click="save"
+            >
+              登録
             </v-btn>
           </template>
           <v-btn
@@ -181,7 +195,11 @@ import { required, number } from '~/lib/validation'
 import { VForm } from '~/types/vuetify'
 
 export default defineComponent({
-  setup () {
+  props: {
+    registerMode: Boolean
+  },
+
+  setup (props) {
     const accessor = useAccessor()
     const router = useRouter()
 
@@ -193,24 +211,28 @@ export default defineComponent({
     const form = ref<VForm | null>(null)
     const valid = ref(true)
 
-    const canEdit = ref(false)
+    // 登録時は初めから編集モードにする
+    const canEdit = ref(props.registerMode)
+
     const releaseDateMenu = ref(false)
     const purchaseDateMenu = ref(false)
 
+    const title = props.registerMode ? '書籍登録' : '書籍詳細情報'
+
     const selectedItem = reactive<TableData>({
-      id: accessor.selectedItem.id,
-      title: accessor.selectedItem.title,
-      author: accessor.selectedItem.author,
-      supervision: accessor.selectedItem.supervision,
-      publisher: accessor.selectedItem.publisher,
-      price: accessor.selectedItem.price,
-      genre: accessor.selectedItem.genre,
-      description: accessor.selectedItem.description,
-      releaseDate: accessor.selectedItem.releaseDate,
-      purchaseDate: accessor.selectedItem.purchaseDate,
-      remarks: accessor.selectedItem.remarks,
-      createDate: accessor.selectedItem.createDate,
-      updateDate: accessor.selectedItem.updateDate
+      id: props.registerMode ? '' : accessor.selectedItem.id,
+      title: props.registerMode ? '' : accessor.selectedItem.title,
+      author: props.registerMode ? '' : accessor.selectedItem.author,
+      supervision: props.registerMode ? '' : accessor.selectedItem.supervision,
+      publisher: props.registerMode ? '' : accessor.selectedItem.publisher,
+      price: props.registerMode ? '' : accessor.selectedItem.price,
+      genre: props.registerMode ? '' : accessor.selectedItem.genre,
+      description: props.registerMode ? '' : accessor.selectedItem.description,
+      releaseDate: props.registerMode ? '' : accessor.selectedItem.releaseDate,
+      purchaseDate: props.registerMode ? '' : accessor.selectedItem.purchaseDate,
+      remarks: props.registerMode ? '' : accessor.selectedItem.remarks,
+      createDate: props.registerMode ? '' : accessor.selectedItem.createDate,
+      updateDate: props.registerMode ? '' : accessor.selectedItem.updateDate
     })
 
     const save = () => {
@@ -219,8 +241,21 @@ export default defineComponent({
         // 更新日にシステム日付をセット
         selectedItem.updateDate = new Date().toISOString().split('T')[0]
 
-        accessor.update(selectedItem)
+        if (props.registerMode) {
+          //  登録の場合
+          // 登録日にシステム日付をセット
+          selectedItem.createDate = new Date().toISOString().split('T')[0]
+
+          accessor.register(selectedItem)
+        } else {
+          // 更新の場合
+          accessor.update(selectedItem)
+        }
+
         router.push('/')
+
+        // 選択したデータのstateをクリア
+        accessor.setSelectedItem({} as TableData)
       }
     }
 
@@ -248,6 +283,9 @@ export default defineComponent({
     const toList = () => {
       accessor.clearSnackbar()
       router.push('/')
+
+      // 選択したデータのstateをクリア
+      accessor.setSelectedItem({} as TableData)
     }
 
     return {
@@ -259,6 +297,7 @@ export default defineComponent({
       rules,
       save,
       selectedItem,
+      title,
       toList,
       valid
     }
