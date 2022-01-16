@@ -13,7 +13,7 @@ const nuxtConfig: NuxtConfig = {
     titleTemplate: '%s',
     title: 'CRUD-mock',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
