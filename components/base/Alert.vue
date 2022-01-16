@@ -1,6 +1,6 @@
 <template>
   <v-alert
-    :value="value"
+    v-model="alert"
     :dismissible="dismissible"
     :type="type"
   >
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from '@nuxtjs/composition-api'
+import { defineComponent, ref, watch } from '@nuxtjs/composition-api'
 
 export default defineComponent({
   props: {
@@ -29,9 +29,21 @@ export default defineComponent({
   },
 
   setup (props, { emit }) {
-    watch(() => props.value, (newVal: boolean) => {
-      if (!newVal) { emit('close') }
+    const alert = ref(props.value)
+
+    watch(() => props.value, (newVal) => {
+      alert.value = newVal
     })
+
+    watch(alert, (newVal) => {
+      if (!newVal) {
+        emit('close')
+      }
+    })
+
+    return {
+      alert
+    }
   }
 })
 </script>

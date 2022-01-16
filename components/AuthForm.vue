@@ -5,7 +5,6 @@
         class="mx-auto pa-2"
         max-width="320"
       >
-        <!-- TODO: 閉じると再表示されない -->
         <base-alert
           v-model="alert"
           dismissible
@@ -117,6 +116,8 @@ export default defineComponent({
     })
 
     const login = () => {
+      alert.value = false
+
       if (form.value?.validate()) {
         if (accounts.value?.some(account => account.password === password.value && account.userName === userName.value)) {
           accessor.setAuthentication({
