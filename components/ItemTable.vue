@@ -25,6 +25,7 @@
         </v-btn>
       </v-card-actions>
       <v-data-table
+        :footer-props="{ itemsPerPageText }"
         :headers="headers"
         :items="items"
         :loading="loading"
@@ -100,6 +101,8 @@ export default defineComponent({
       }
     ]
 
+    const itemsPerPageText = '1ページあたりの表示数'
+
     const data = ref<any>([])
     const items = ref<TableData[]>()
 
@@ -139,6 +142,7 @@ export default defineComponent({
     return {
       headers,
       items,
+      itemsPerPageText,
       loading,
       price,
       reset,
